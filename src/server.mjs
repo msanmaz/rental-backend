@@ -2,6 +2,7 @@ import express from 'express';
 import morgan from 'morgan';
 import router from './router.mjs'
 import { protect } from './modules/auth.mjs';
+import { createAdmin, signin } from './handlers/user.mjs';
 // Create an Express application
 const app = express();
 
@@ -16,5 +17,7 @@ app.get('/', (req,res) =>{
 })
 
 app.use('/api',protect,router)
+app.post('/createUser',createAdmin)
+app.post('/signin',signin)
 
 export default app;
