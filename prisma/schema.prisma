@@ -1,0 +1,72 @@
+// schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql" // Adjust the provider as per your database (e.g., postgresql, mysql, sqlite)
+  url      = env("DATABASE_URL")
+}
+
+model Admin {
+  id        Int       @id @default(autoincrement())
+  email     String    @unique
+  password  String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model City {
+  id        Int       @id @default(autoincrement())
+  name      String
+  properties Property[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Property {
+  id             Int            @id @default(autoincrement())
+  title          String
+  description    String
+  address        String
+  cityId         Int
+  city           City           @relation(fields: [cityId], references: [id])
+  propertyTypeId Int
+  propertyType   PropertyType   @relation(fields: [propertyTypeId], references: [id])
+  rooms          Int
+  bathrooms      Int
+  amenities      String[]       // Array of amenities
+  rentalDetail   RentalDetail?
+  saleDetail     SaleDetail?
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+}
+
+model PropertyType {
+  id        Int        @id @default(autoincrement())
+  name      String
+  properties Property[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+}
+
+model RentalDetail {
+  id        Int       @id @default(autoincrement())
+  propertyId Int      @unique
+  property  Property  @relation(fields: [propertyId], references: [id])
+  rent      Float
+  available Boolean   @default(true)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model SaleDetail {
+  id        Int       @id @default(autoincrement())
+  propertyId Int      @unique
+  property  Property  @relation(fields: [propertyId], references: [id])
+  price     Float
+  available Boolean   @default(true)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}

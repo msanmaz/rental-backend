@@ -1,0 +1,20 @@
+{
+    "compilerOptions": {
+      "target": "es6",                   // Compile JavaScript to ECMAScript 6
+      "module": "commonjs",              // Use commonjs module system (useful for Node.js projects)
+      "outDir": "dist",                  // Redirect output structure to the directory
+      "rootDir": "src",                  // Specify the root directory of input files
+      "allowSyntheticDefaultImports": true, // Allow default imports from modules with no default export
+      "esModuleInterop": true,           // Enables ES6-style module interop
+      "forceConsistentCasingInFileNames": true, // Disallow inconsistently-cased references to the same file
+      "strict": true,                    // Enable all strict type-checking options
+      "sourceMap": true,                  // Generate source map files for debugging
+      "baseUrl": ".",
+      "paths": {
+        "@/*" : ["src/*"]
+      }
+    },
+    "include": ["src/**/*"],             // Include all files in the src directory
+    "exclude": ["node_modules", "dist"]  // Exclude node_modules and dist from the compilation
+  }
+  
