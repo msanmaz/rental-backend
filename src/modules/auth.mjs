@@ -16,7 +16,7 @@ export const createJWT = (user) => {
 }
 
 
-export const protect = (req,res) =>{
+export const protect = (req,res,next) =>{
     const bearer = req.headers.authorization
 
     if(!bearer){
@@ -28,7 +28,7 @@ export const protect = (req,res) =>{
     const [,token] = bearer.split(' ')
 
     if (!token){
-        res.stats(401)
+        res.status(401)
         res.json({message:'Not a Valid Token!!'})
         return
     }
@@ -38,10 +38,15 @@ export const protect = (req,res) =>{
         req.user = user
         next()
     }catch(e){
-        console.error(e)
-        res.status(401)
-        res.json({message:"NOT A VALID TOKEN"})
-        return
+        console.error(e);
+        if (e instanceof jwt.TokenExpiredError) {
+            res.status(401).json({ message: "Token has expired" });
+        } else if (e instanceof jwt.JsonWebTokenError) {
+            res.status(401).json({ message: e.message });
+        } else {
+            res.status(401).json({ message: "Not a valid token" });
+        }
+        return;
     }
 
 }

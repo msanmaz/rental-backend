@@ -51,7 +51,7 @@ export const signin = async (req, res) => {
     },
   });
   if (user === null){
-   return res.status(400).json({ error: "No Email Associated" });
+   return res.status(400).json({ error: "User Not Found" });
   }
   const isValid = await comparePasswords(password, user.password);
 
