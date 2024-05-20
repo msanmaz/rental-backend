@@ -1,17 +1,14 @@
-import Joi from "joi";
-import { comparePasswords, createJWT, hashPassword } from "../modules/auth.mjs";
+import { comparePasswords, createJWT, hashPassword } from "../utils/auth.mjs"
 import prisma from "../modules/db.mjs";
+import { serialize } from 'cookie';
+import { userSchema } from "../utils/validation.mjs"
 
-// Define the validation schema
-const schema = Joi.object({
-  email: Joi.string().email().required(),
-  password: Joi.string().min(6).required(),
-});
+
 
 export const createAdmin = async (req, res) => {
   const { email, password } = req.body;
 
-  const { error } = schema.validate({ email, password });
+  const { error } = userSchema.validate({ email, password });
   if (error) {
     return res.status(400).json({ error: error.details[0].message });
   }
@@ -39,7 +36,7 @@ export const createAdmin = async (req, res) => {
   }
 };
 
-export const signin = async (req, res) => {
+export const login = async (req, res) => {
   if (!req.body || Object.keys(req.body).length === 0) {
     return res.status(400).json({ error: "Request body is empty" });
   }
@@ -60,5 +57,16 @@ export const signin = async (req, res) => {
   }
 
   const token = createJWT(user);
-  res.json({ token });
+  // Serialize the cookie
+const serializedCookie = serialize('token', token, {
+  httpOnly: true,
+  secure: process.env.NODE_ENV === 'production', // Set to true in production
+  maxAge: 60 * 60 * 24 * 7, // 1 week
+  path: '/admin', // Make cookie available for all routes
+});
+
+// Set the cookie header
+res.setHeader('Set-Cookie', serializedCookie);
+  res.json({ user,token });
 };
+

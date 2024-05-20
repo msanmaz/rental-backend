@@ -17,8 +17,6 @@ export const addProperty = async (propertyData) => {
   });
 };
 
-
-
 export const getCityIdByName = async (cityName) => {
   const city = await prisma.city.findUnique({
     where: { name: cityName },

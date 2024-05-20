@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { body, param } from 'express-validator';
-import { handleInputErrors } from './modules/middleware.mjs';
-import { getHouseById, updateHouse, addHouse, deleteHouse } from './handlers/houses.mjs';
+import { handleInputErrors } from '../middleware/inputMiddleware.mjs';
+import { getHouseById, updateHouse, addHouse, deleteHouse } from '../handlers/houses.mjs';
 
 const router = Router();
 
