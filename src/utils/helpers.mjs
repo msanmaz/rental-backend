@@ -31,26 +31,28 @@ export const getPropertyTypeByName = async (propertyType) => {
   return city ? city.id : null;
 };
 
-// async function addTestCities() {
-//   const cities = [
-//     { name: "Istanbul" },
-//     { name: "Bodrum" },
-//     { name: "Stuttgart" }
-//   ];
+async function addTestCities() {
+  const cities = [
+    { name: "Istanbul" },
+    { name: "Bodrum" },
+    { name: "Stuttgart" }
+  ];
 
-//   for (let city of cities) {
-//     await prisma.city.create({ data: city });
-//   }
-// }
+  for (let city of cities) {
+    await prisma.city.create({ data: city });
+  }
+}
 
-// async function addTestPropertyTypes() {
-//   const propertyTypes = [
-//     { name: "Apartment" },
-//     { name: "Commercial" },
-//     { name: "Villa" }
-//   ];
 
-//   for (let propertyType of propertyTypes) {
-//     await prisma.propertyType.create({ data: propertyType });
-//   }
-// }
+async function addTestPropertyTypes() {
+  const propertyTypes = [
+    { name: "Apartment" },
+    { name: "Commercial" },
+    { name: "Villa" }
+  ];
+
+  for (let propertyType of propertyTypes) {
+    await prisma.propertyType.create({ data: propertyType });
+  }
+}
+

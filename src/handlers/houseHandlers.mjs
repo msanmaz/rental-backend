@@ -1,7 +1,6 @@
 import prisma from '../modules/db.mjs';
 import { getCityIdByName, getPropertyTypeByName, addProperty as addPropertyToDB } from '../utils/helpers.mjs';
 
-
 export const getAllHouses = async (req, res) => {
   try {
     const houses = await prisma.property.findMany({
@@ -15,7 +14,7 @@ export const getAllHouses = async (req, res) => {
     res.status(200).json(houses);
   } catch (error) {
     console.error('Error fetching houses:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(500).json({ success: false, message: 'Internal Server Error' });
   }
 };
 
@@ -32,12 +31,12 @@ export const getHouseById = async (req, res) => {
       },
     });
     if (!house) {
-      return res.status(404).json({ error: 'House not found' });
+      return res.status(404).json({ success: false, message: 'House not found' });
     }
     res.status(200).json(house);
   } catch (error) {
     console.error('Error fetching house:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(500).json({ success: false, message: 'Internal Server Error' });
   }
 };
 
@@ -53,7 +52,7 @@ export const updateHouse = async (req, res) => {
     res.status(200).json(updatedProperty);
   } catch (error) {
     console.error('Error updating property:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(500).json({ success: false, message: 'Internal Server Error' });
   }
 };
 
@@ -64,7 +63,7 @@ export const addHouse = async (req, res) => {
     const propertyTypeId = await getPropertyTypeByName(propertyType);
     
     if (!cityId) {
-      return res.status(400).json({ error: 'City name does not exist' });
+      return res.status(400).json({ success: false, message: 'City name does not exist' });
     }
 
     const propertyData = {
@@ -84,7 +83,7 @@ export const addHouse = async (req, res) => {
     res.status(201).json(property);
   } catch (error) {
     console.error('Error adding property:', error);
-    res.status(400).json({ error: error.message });
+    res.status(400).json({ success: false, message: error.message });
   }
 };
 
@@ -97,6 +96,6 @@ export const deleteHouse = async (req, res) => {
     res.status(204).send();  // No content
   } catch (error) {
     console.error('Error deleting property:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(500).json({ success: false, message: 'Internal Server Error' });
   }
 };
