@@ -3,13 +3,13 @@ import { body, param } from 'express-validator';
 import { handleInputErrors } from '../middleware/inputMiddleware.mjs';
 import { getHouseById, updateHouse, addHouse, deleteHouse } from '../handlers/houseHandlers.mjs';
 
-const router = Router();
+const protectedHouseRouter = Router();
 
 // Fetch a single house by ID
-router.get('/houses/:id', param('id').isInt().withMessage('ID must be an integer'), handleInputErrors, getHouseById);
+protectedHouseRouter.get('/houses/:id', param('id').isInt().withMessage('ID must be an integer'), handleInputErrors, getHouseById);
 
 // Update a house by ID
-router.put(
+protectedHouseRouter.put(
   '/houses/:id',
   [
     param('id').isInt().withMessage('ID must be an integer'),
@@ -27,7 +27,7 @@ router.put(
 );
 
 // Add a new house
-router.post(
+protectedHouseRouter.post(
   '/houses',
   [
     body('title').notEmpty().withMessage('Title is required'),
@@ -44,6 +44,6 @@ router.post(
 );
 
 // Delete a house by ID
-router.delete('/houses/:id', param('id').isInt().withMessage('ID must be an integer'), handleInputErrors, deleteHouse);
+protectedHouseRouter.delete('/houses/:id', param('id').isInt().withMessage('ID must be an integer'), handleInputErrors, deleteHouse);
 
-export default router;
+export default protectedHouseRouter;
